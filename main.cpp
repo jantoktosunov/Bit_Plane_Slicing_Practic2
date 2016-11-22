@@ -12,13 +12,25 @@ using namespace std;
  * Изображения переведите сперва черно-белое 8-бит
  */
 
+/*Свой метод для нарезки битовой плоскости, НЕ НАШЛИ ГОТОВЫЙ МЕТОД OPENCV*/
+void bit_plane_clice(Mat in,Mat out, int bit){
+    int cols = in.cols;
+    int rows = in.rows;
+
+    for (int y = 0; y < rows; y++){
+        for (int x = 0; x < cols; x++){
+            out.at<uchar>(y, x) = (in.at<uchar>(y, x) & uchar(bit)) ? uchar(255) : uchar(0);
+        }
+    }
+}
+
 int main(int argc, char** argv) {
-    Mat m1 = imread(argv[1], CV_8U);
-    imshow("Original_GRAYd", m1);
+    Mat m1 = imread(argv[1], CV_8U);//Cчитываем рисунок через аргумент
+    imshow("Original_GRAY", m1);
     int cols, rows, x, y;
     cols = m1.cols;
     rows = m1.rows;
-    printf("%d %d \n", m1.rows, m1.cols);
+    //printf("%d %d \n", m1.rows, m1.cols);
     Mat out1(rows, cols, CV_8UC1, Scalar(0));
     Mat out2 = out1.clone();
     Mat out3 = out1.clone();
@@ -28,8 +40,14 @@ int main(int argc, char** argv) {
     Mat out7 = out1.clone();
     Mat out8 = out1.clone();
 
-
-
+    bit_plane_clice(m1,out1,1);
+    bit_plane_clice(m1,out2,2);
+    bit_plane_clice(m1,out3,4);
+    bit_plane_clice(m1,out4,8);
+    bit_plane_clice(m1,out5,16);
+    bit_plane_clice(m1,out6,32);
+    bit_plane_clice(m1,out7,64);
+    bit_plane_clice(m1,out8,128);
 
     imshow("out1", out1);
     imshow("out2", out2);
